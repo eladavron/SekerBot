@@ -5,6 +5,7 @@ import os
 import sys
 import logging
 import traceback
+from bidi import algorithm
 from pathlib import Path
 
 #Get latest post time
@@ -38,9 +39,11 @@ def RetweetSekers(last_id):
             try:
                 api.retweet(tweet.id)
                 print('Retweeted: ' +  MessageUrlBuilder(tweet))
+                print(algorithm.get_display(tweet.text))
             except tweepy.TweepError as ex:
                 if ex.api_code == 327:
-                    print('Already retweeted: ' + MessageUrlBuilder(tweet))
+                    #print('Already retweeted: ' + MessageUrlBuilder(tweet))
+                    pass
                 else:
                     logging.error(traceback.format_exc())
         SaveLastID(last_id)
