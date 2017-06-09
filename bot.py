@@ -1,18 +1,15 @@
-import tweepy
 import configparser
-import re
 import os
-import sys
 import logging
 import traceback
 from bidi import algorithm
-from pathlib import Path
+import tweepy
 
 #Get latest post time
 configPath = os.path.dirname(os.path.abspath(__file__)) + '/config.ini'
 config = configparser.ConfigParser()
 config.read(configPath)
-last_id = int(config.get('main', 'last_id'))
+last_saved_id = int(config.get('main', 'last_id'))
 
 #Check if tokens are available
 def GetAuth():
@@ -21,11 +18,12 @@ def GetAuth():
         auth = tweepy.OAuthHandler(api_key, api_secret)
         auth.set_access_token(access_token, access_token_secret)
         return tweepy.API(auth)
-    except ModuleNotFoundError as mex:
+    except ModuleNotFoundError:
         print('Tokens not defined! Running onetime authenticator...')
         import onetime
+        onetime.main()
         return GetAuth()
-    except Exception as ex:
+    except Exception:
         print('Something unknown happened')
         return
 
@@ -56,5 +54,5 @@ def SaveLastID(last_id):
     with open(configPath, 'w') as configWriter:
         config.write(configWriter)
 
-RetweetSekers(last_id)
+RetweetSekers(last_saved_id)
 quit()

@@ -22,5 +22,7 @@ def main():
     except tweepy.TweepError:
         print('Error! Failed to get access token.')
 
-main()
-
+if __name__ == "__main__":
+    # execute only if run as a script
+    main()
+    
