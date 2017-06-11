@@ -37,7 +37,7 @@ def RetweetSekers(last_id):
             try:
                 api.retweet(tweet.id)
                 print('Retweeted: ' +  MessageUrlBuilder(tweet))
-                print(algorithm.get_display(tweet.text))
+                print(algorithm.get_display(tweet.text, encoding='utf-8'))
             except tweepy.TweepError as ex:
                 if ex.api_code == 327:
                     #print('Already retweeted: ' + MessageUrlBuilder(tweet))
