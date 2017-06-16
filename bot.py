@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import configparser
 import os
+import sys
+import codecs
 import logging
 import traceback
-from bidi import algorithm
 import tweepy
 
 #Get latest post time
@@ -36,8 +39,9 @@ def RetweetSekers(last_id):
                 last_id = tweet.id
             try:
                 api.retweet(tweet.id)
-                print('Retweeted: ' +  MessageUrlBuilder(tweet))
-                print(algorithm.get_display(tweet.text, encoding='utf-8'))
+                sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
+                print('Retweeted: ' +  MessageUrlBuilder(tweet))                
+                print(tweet.text)
             except tweepy.TweepError as ex:
                 if ex.api_code == 327:
                     #print('Already retweeted: ' + MessageUrlBuilder(tweet))
